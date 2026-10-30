@@ -1,0 +1,169 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light dark;
+  --board-given: #0f172a;
+  --board-user: #1d4ed8;
+  --board-conflict: #b91c1c;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    "Noto Sans SC",
+    sans-serif;
+}
+
+/* 播放器类：焦点必须可见（NFR-A11Y-003） */
+:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* 设置项「减少动态效果」：手动覆盖系统偏好 */
+.reduce-motion *,
+.reduce-motion *::before,
+.reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  transition-duration: 0.01ms !important;
+}
+
+/*
+ * 深色模式（SRS FR-SET / 4.11）。
+ *
+ * 实现方式是覆盖 Tailwind 的语义色，而不是给每个组件加 `dark:` 变体——
+ * 组件里写的是 bg-white / text-slate-900 这类固定的浅色语义，逐处加变体容易漏。
+ * 这里集中映射，只覆盖实际用到的组合；对比度由 axe 扫描兜底（e2e/a11y.spec.ts）。
+ */
+html.dark {
+  color-scheme: dark;
+  --board-given: #e2e8f0;
+  --board-user: #93c5fd;
+  --board-conflict: #fca5a5;
+}
+
+html.dark body {
+  background-color: #0f172a;
+  color: #e2e8f0;
+}
+
+/* 背景 */
+html.dark .bg-white {
+  background-color: #1e293b !important;
+}
+html.dark .bg-slate-50,
+html.dark .bg-slate-100 {
+  background-color: #334155 !important;
+}
+html.dark .bg-slate-200 {
+  background-color: #475569 !important;
+}
+html.dark .bg-blue-50 {
+  background-color: #1e3a8a !important;
+}
+html.dark .bg-amber-50 {
+  background-color: #422006 !important;
+}
+html.dark .bg-red-50 {
+  background-color: #450a0a !important;
+}
+html.dark .bg-slate-900 {
+  background-color: #0b1220 !important;
+}
+
+/* 文字 */
+html.dark .text-slate-900,
+html.dark .text-slate-800 {
+  color: #f1f5f9 !important;
+}
+html.dark .text-slate-700,
+html.dark .text-slate-600 {
+  color: #cbd5e1 !important;
+}
+html.dark .text-slate-500,
+html.dark .text-slate-400 {
+  color: #94a3b8 !important;
+}
+html.dark .text-blue-700,
+html.dark .text-blue-900 {
+  color: #93c5fd !important;
+}
+html.dark .text-amber-800,
+html.dark .text-amber-900 {
+  color: #fcd34d !important;
+}
+html.dark .text-red-800,
+html.dark .text-red-900,
+html.dark .text-red-700 {
+  color: #fca5a5 !important;
+}
+html.dark .text-green-700,
+html.dark .text-green-800 {
+  color: #86efac !important;
+}
+
+/* 边框与分隔线 */
+html.dark .border-slate-100,
+html.dark .border-slate-200,
+html.dark .border-slate-300 {
+  border-color: #334155 !important;
+}
+html.dark .divide-slate-100 > * + * {
+  border-color: #334155 !important;
+}
+html.dark .border-blue-300,
+html.dark .border-blue-400 {
+  border-color: #1d4ed8 !important;
+}
+html.dark .border-red-200,
+html.dark .border-red-300 {
+  border-color: #7f1d1d !important;
+}
+html.dark .border-amber-300 {
+  border-color: #a16207 !important;
+}
+
+/* ring（用 --tw-ring-color，不能直接写 border-color） */
+html.dark .ring-slate-300 {
+  --tw-ring-color: #475569 !important;
+}
+html.dark .ring-red-300 {
+  --tw-ring-color: #7f1d1d !important;
+}
+html.dark .ring-blue-300 {
+  --tw-ring-color: #1d4ed8 !important;
+}
+
+/* 表单控件 */
+html.dark input,
+html.dark select,
+html.dark textarea {
+  background-color: #0f172a;
+  color: #e2e8f0;
+  border-color: #475569;
+}
+
+/* 焦点环在深色下要更亮 */
+html.dark :focus-visible {
+  outline-color: #93c5fd;
+}
+

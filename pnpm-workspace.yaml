@@ -1,0 +1,9 @@
+# pnpm 11+ 把项目级配置放在这里（.npmrc 只剩 registry 这类 npm 兼容项）。
+#
+# 新版 pnpm 默认开启「最小发布年龄」供应链策略：发布不满 24 小时的包会被拒绝安装。
+# 本项目的间接依赖恰好锁定了几个刚发布的版本，会报
+# ERR_PNPM_MINIMUM_RELEASE_AGE_VIOLATION。这里按项目关闭。
+minimumReleaseAge: 0
+
+# 运行脚本前自动安装依赖，会把一次安装失败放大成「vite 不是可执行命令」。
+verifyDepsBeforeRun: false
