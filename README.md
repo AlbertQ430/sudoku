@@ -2,7 +2,9 @@
 
 标准 9×9 数独 PWA：打开即玩、无需注册、数据只存在本机。
 
-需求基线见 [`数独软件需求规格说明书.md`](./数独软件需求规格说明书.md)（V1.6），架构与实现说明见 [`技术方案.md`](./技术方案.md)、[`软件结构.md`](./软件结构.md)。
+**在线玩：https://sudoku-qzy.netlify.app**
+
+需求基线见 [`数独软件需求规格说明书.md`](./数独软件需求规格说明书.md)（V1.6），架构与实现说明见 [`技术方案.md`](./技术方案.md)、[`软件结构.md`](./软件结构.md)。使用说明见 [`docs/用户指南.md`](./docs/用户指南.md)，许可证见 [MIT](./LICENSE)。
 
 ---
 
@@ -60,7 +62,7 @@ npx playwright install chromium
 | `pnpm lint` | ESLint，零警告 |
 | `pnpm test:e2e` | Playwright 端到端（会先构建再起 preview） |
 | `pnpm test:e2e:ui` | Playwright 交互模式 |
-| `pnpm exec playwright test e2e/a11y.spec.ts` | 只跑 axe 无障碍扫描（7 个页面） |
+| `pnpm exec playwright test e2e/a11y.spec.ts` | 只跑 axe 无障碍扫描（8 个页面，含深色模式） |
 | `pnpm pool:build` | 扩充题库，见下节 |
 | `pnpm bench` | 引擎基准（五档生成耗时与成功率） |
 | `pnpm perf` | 性能基准，产出引擎层耗时表（详见 `docs/PERFORMANCE.md`） |
@@ -85,7 +87,6 @@ for d in beginner easy medium hard expert; do pnpm pool:build --target=$d --coun
 
 > 中等/专家档生成时 Node 进程会偶发 `0xC0000005` 崩溃（`sudoku-core` 内部问题）。
 > 因为每道题单独落盘，重跑即可继续，不需要手工清理。
-| `pnpm test:e2e:ui` | Playwright 交互模式，调试用例用 |
 
 ## E2E
 
@@ -115,13 +116,13 @@ pnpm test:e2e
 
 ```
 src/
-├─ engine/      纯算法：解析、冲突、解数统计、求解、评级、生成、Worker
-├─ domain/      领域逻辑：棋盘状态、撤销栈、判定、状态机、计时、统计
-├─ storage/     Dexie 六表、仓储、迁移、多标签页协调
+├─ engine/      纯算法：解析、冲突、解数统计、求解、评级、题库取题、Worker
+├─ domain/      领域逻辑：棋盘状态、撤销栈、判定、状态机、计时、统计、备份格式
+├─ storage/     Dexie 六表、仓储、迁移、备份导入导出
 ├─ stores/      Zustand：对局状态与持久化接线
-├─ features/    棋盘、数字键盘、结果区、生成流程
-├─ pages/       首页、对局、自定义、求解器、收藏、设置
-└─ shared/      样式、测试 setup
+├─ features/    棋盘、数字键盘、状态栏、结果区、取题流程
+├─ pages/       首页、对局、自定义、求解器、收藏、统计、设置、关于
+└─ shared/      样式、主题、测试 setup
 ```
 
 分层规则由 ESLint 强制：`engine` 不得依赖 React / DOM / 存储。
